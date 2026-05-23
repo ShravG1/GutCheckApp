@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  /* A more clinical, considered palette than the original sage/cream.
+     Class names (bg-sage, text-charcoal, bg-cream, ...) are kept so the
+     rest of the app inherits the new look without per-file edits. */
+  --color-sage: #3B6F5F;          /* deep forest — primary */
+  --color-sage-dark: #25504A;     /* primary pressed / CTA */
+  --color-sage-light: #DCE8E2;    /* tonal background, chips */
+  --color-cream: #F2F3F0;         /* cool off-white app background */
+  --color-card: #FFFFFF;
+  --color-charcoal: #1A1F2A;      /* deep slate — body text */
+  --color-muted: #5C6576;         /* slate-blue secondary text */
+  --color-terracotta: #B25A45;    /* deeper, more grounded accent */
+  --color-terracotta-light: #F1DDD4;
+  --color-line: #E2E3DE;          /* hairline / borders */
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --radius-card: 16px;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html, body, #root {
+    height: 100dvh;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    background: var(--color-cream);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+  button, input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+  /* Larger default tap comfort for older eyes */
+  input, textarea {
+    color: var(--color-charcoal);
+  }
+  ::placeholder { color: #A8A8A8; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes toast-in-out {
+  0% { opacity: 0; transform: translateY(20px); }
+  12% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.animate-fade-in { animation: fade-in 0.35s ease-out both; }
+.animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-scale-in { animation: scale-in 0.25s ease-out both; }
+.animate-toast { animation: toast-in-out 3.6s ease forwards; }
+.animate-gentle-pulse { animation: gentle-pulse 2.4s ease-in-out infinite; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+::-webkit-scrollbar { width: 0; height: 0; }
+
+.card-shadow { box-shadow: 0 1px 2px rgba(26, 31, 42, 0.04), 0 4px 14px rgba(26, 31, 42, 0.06); }
+.card-shadow-lg { box-shadow: 0 2px 4px rgba(26, 31, 42, 0.06), 0 12px 32px rgba(26, 31, 42, 0.12); }
