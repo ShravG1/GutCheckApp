@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "vitest run",
     "lint": "eslint .",
     "preview": "npm run build && wrangler dev",
     "icons": "node scripts/generate-icons.mjs",
@@ -35,6 +36,7 @@
     "globals": "^17.5.0",
     "sharp": "^0.34.5",
     "vite": "^8.0.10",
+    "vitest": "^4.1.9",
     "wrangler": "^4.96.0"
   }
 }
