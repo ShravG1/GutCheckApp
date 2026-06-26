@@ -33,6 +33,10 @@ export default function LogScreen({ editMeal, settings, onDone }) {
   const [timestamp, setTimestamp] = useState(
     () => editMeal?.timestamp || Date.now(),
   )
+  // Which preset (if any) is currently selected. Tracked in state from the tap
+  // itself rather than reverse-derived from a live clock read, so the chip
+  // highlight is exact and render stays pure.
+  const [activePreset, setActivePreset] = useState(null)
   const [photoBlob, setPhotoBlob] = useState(editMeal?.photoBlob || null)
   const [notes, setNotes] = useState(editMeal?.notes || '')
   const [customTag, setCustomTag] = useState('')
@@ -67,13 +71,6 @@ export default function LogScreen({ editMeal, settings, onDone }) {
       .filter((s) => s.toLowerCase().includes(q) && s.toLowerCase() !== q)
       .slice(0, 5)
   }, [foodText, suggestions])
-
-  // Which preset (if any) the current timestamp matches — within a 90s window
-  // of the original tap so the chip stays "stuck" instead of drifting off.
-  const activePreset = useMemo(() => {
-    const diffMin = (Date.now() - timestamp) / 60000
-    return TIME_PRESETS.find((p) => Math.abs(p.minutes - diffMin) < 1.5)?.minutes
-  }, [timestamp])
 
   const timeLabel = useMemo(() => {
     const d = new Date(timestamp)
@@ -208,6 +205,7 @@ export default function LogScreen({ editMeal, settings, onDone }) {
                   type="button"
                   onClick={() => {
                     setTimestamp(Date.now() - p.minutes * 60_000)
+                    setActivePreset(p.minutes)
                     setShowCustomTime(false)
                   }}
                   className={`px-3 min-h-[36px] rounded-full text-[13px] font-medium border transition-colors ${
@@ -240,7 +238,10 @@ export default function LogScreen({ editMeal, settings, onDone }) {
                 value={toLocalInputValue(new Date(timestamp))}
                 max={toLocalInputValue(new Date())}
                 onChange={(e) => {
-                  if (e.target.value) setTimestamp(fromLocalInputValue(e.target.value))
+                  if (e.target.value) {
+                    setTimestamp(fromLocalInputValue(e.target.value))
+                    setActivePreset(null)
+                  }
                 }}
                 className="w-full rounded-xl border border-line bg-cream px-3 py-2.5 text-[15px] focus:outline-none focus:border-sage"
               />
